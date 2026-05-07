@@ -102,5 +102,5 @@ theme: fluid
 ## Docs: https://hexo.io/docs/one-command-deployment
 deploy:
   type: git
-  repo: https://gitee.com/mingzaiplanet/mingzaiplanet.git
-  branch: master
+  repo: git@gitee.com:mingzaiplanet/mingzaiplanet.git
+  branch: main
