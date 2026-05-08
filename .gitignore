@@ -7,4 +7,4 @@ public/
 .deploy*/
 _multiconfig.yml
 import_notes.py
-import_notes.sh
+import_notes.shsync.sh

@@ -18,7 +18,7 @@ post:
   banner_mask_alpha: 0.3
   math:
     enable: true
-    specific: true
+    specific: false
 
 # 归档页
 archive:
