@@ -100,23 +100,23 @@ date: 2025-10-30
 *要添加图像，请使用感叹号 (!), 然后在方括号增加替代文本，图片链接放在圆括号里，括号里的链接后可以增加一个可选的图片标题文本。*  
 插入图片Markdown语法代码：
 
-    ![图片alt](图片链接_"图片title")
+    ![图片alt](图片链接 "图片title")
 如：  
-![没有图片时显示的文字](./圣经.png_"圣经")
+![没有图片时显示的文字](./圣经.png "圣经")
 ![显示错误]()
 
 ### 链接图片
 *给图片增加链接，请将图像的Markdown 括在方括号中，然后将链接添加在圆括号中。* 示例代码：
 
-    [![沙漠中的岩石图片](/assets/img/shiprock.jpg_"Shiprock")](https://markdown.com.cn)
+    [![沙漠中的岩石图片](/assets/img/shiprock.jpg "Shiprock")](https://markdown.com.cn)
 
-[![显示错误](/圣经.png)](https://markdown.com.cn)
+[![显示错误](/images/img_116d132679.png)](https://markdown.com.cn)
 
 ## 转义字符语法
 *要显示原本用于格式化 Markdown 文档的字符，请在字符前面添加反斜杠字符 \ 。* 如：  
 \*我不喜欢斜体。\*  
 以下列出的字符都可以通过使用反斜杠字符从而达到转义目的。
-![alt text](image.png)
+![alt text](/images/img_f64c5496c7.png)
 
 ## 表格
 *要添加表，请使用三个或多个连字符（---）创建每列的标题，并使用管道（|）分隔每列。您可以选择在表的任一端添加管道。* 如：  

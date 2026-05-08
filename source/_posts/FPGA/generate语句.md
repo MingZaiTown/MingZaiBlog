@@ -316,7 +316,7 @@ generate
         
         // 输出数据选择
         if (i == 0) begin
-            assign read_data = bank_selected ? bank_read_data : {DATA_WIDTH{1'b0}};
+            assign read_data = bank_selected ? bank_read_data : {DATA_WIDTH{1'b0} };
         end else begin
             assign read_data = bank_selected ? bank_read_data : read_data;
         end
@@ -346,11 +346,11 @@ generate
         if (PORT_DIRECTION[i] == 1'b1) begin : output_port
             // 输出端口：内部数据 → 外部端口
             assign port_out[i] = data_to_port[i];
-            assign data_from_port[i] = {DATA_WIDTH{1'b0}};  // 输入为0
+            assign data_from_port[i] = {DATA_WIDTH{1'b0} };  // 输入为0
         end else begin : input_port  
             // 输入端口：外部端口 → 内部数据
             assign data_from_port[i] = port_in[i];
-            assign port_out[i] = {DATA_WIDTH{1'b0}};  // 输出为0
+            assign port_out[i] = {DATA_WIDTH{1'b0} };  // 输出为0
         end
     end
 endgenerate

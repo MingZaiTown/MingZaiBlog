@@ -79,7 +79,7 @@ $$f_{null} = \frac{1}{T_s} = R_s$$
 
 **第一过零点带宽 $B_{null}$** 被定义为从直流 (DC, $f=0$) 到第一个过零点频率的宽度。
 
-$$\mathbf{B_{null}} = f_{null} - 0 = R_s$$
+$$\mathbf{B_{null} } = f_{null} - 0 = R_s$$
 
 ## 🌰 举例说明（二元信号）
 

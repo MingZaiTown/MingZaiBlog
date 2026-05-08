@@ -47,7 +47,7 @@ env QT_IM_MODULE=fcitx意思是它的QT（一种框架）的输入法使用fcitx
 XMODIFIERS=@im=fcitx
 ```
 之后重启；
-  重启后若无效，则使用局部方法：
+	重启后若无效，则使用局部方法：
 2. **修改1. 无效应用的.desktop文件**：一般在`/usr/share/applications`下，比如`qq.desktop`。打开，修改`exec=`行，这一行描述了运行此应用时的行为。这一行默认只会有app的位置，我们保留该位置，在应用位置和=之间加上环境变量：`env GTK_IM_MODULE=fcitx QT_IM_MODULE=fcitx`，然后运行更新数据库：`sudo update-desktop-database`，注销账户后再进入即可。
 ### 其他说明
 解决方法的思路就是给这些应用在运行时加上环境变量。通过我查找资料、问AI，与此相关的环境变量有3个：`GTK_IM_MODULE=fcitx QT_IM_MODULE=fcitx XMODIFIERS=@im=fcitx`，（其实还有一个AI说的`QT_QPA_PLATFORM=xcb`），本来是可以把这三个变量都设置成全局的的，但是fcitx官方wiki只建议设置最后一个为全局变量 https://fcitx-im.org/wiki/Using_Fcitx_5_on_Wayland#KDE_Plasma 。于是我采用这种全局➕局部的方法。
