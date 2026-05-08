@@ -64,7 +64,7 @@ sudo ntfsfix /dev/nvme1n1p2
     ```
     
 2. 找到您为 Windows E 盘添加的那一行，并将其**替换**为以下配置：
-    （若不知道UUID，可以用lsblk来查看。）![屏幕截图_20251031_221117](/images/Linux_Arch_屏幕截图_20251031_221117.png)
+    （若不知道UUID，可以用lsblk来查看。）![屏幕截图_20251031_221117](/images/img_6a22abbed4.png)
     代码段
     
     ```
