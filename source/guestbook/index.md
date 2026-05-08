@@ -3,15 +3,12 @@ layout: page
 title: 留言板
 ---
 
-<div id="twikoo"></div>
+<div id="twikoo" style="margin: 1rem 0;"></div>
+<script src="https://lib.baomitu.com/twikoo/1.7.9/twikoo.all.min.js"></script>
 <script>
-Fluid.utils.loadComments('#twikoo', function() {
-  Fluid.utils.createScript('https://lib.baomitu.com/twikoo/1.7.9/twikoo.all.min.js', function() {
-    twikoo.init({
-      envId: 'https://mingzaiblog.pages.dev/twikoo',
-      el: '#twikoo'
-    });
-  });
+twikoo.init({
+  envId: 'https://mingzaiblog.pages.dev/twikoo',
+  el: '#twikoo'
 });
 </script>
 
