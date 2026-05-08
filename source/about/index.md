@@ -20,6 +20,7 @@ layout: about
 
 - 👤GitHub: [MingZaiTown](https://github.com/MingZaiTown)
 - 📧Email: lqx2063089547@163.com
+- 🍻Bilibili: [不告诉你](https://www.bilibili.com/)
 ---
 
 *博客使用 Hexo + Fluid 主题，托管于 Cloudflare Pages*
