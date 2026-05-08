@@ -4,7 +4,7 @@ navbar:
 
 # 首页
 index:
-  banner_img: /img/default.png
+  banner_img: /img/banner.jpg
   banner_img_height: 100
   banner_mask_alpha: 0.3
   slogan:
@@ -13,7 +13,7 @@ index:
 
 # 文章页
 post:
-  banner_img: /img/default.png
+  banner_img: /img/banner.jpg
   banner_img_height: 70
   banner_mask_alpha: 0.3
   math:
@@ -22,35 +22,35 @@ post:
 
 # 归档页
 archive:
-  banner_img: /img/default.png
+  banner_img: /img/banner.jpg
   banner_img_height: 60
   banner_mask_alpha: 0.3
 
 # 分类页
 category:
   enable: true
-  banner_img: /img/default.png
+  banner_img: /img/banner.jpg
   banner_img_height: 60
   banner_mask_alpha: 0.3
 
 # 标签页
 tag:
   enable: true
-  banner_img: /img/default.png
+  banner_img: /img/banner.jpg
   banner_img_height: 80
   banner_mask_alpha: 0.3
 
 # 关于页
 about:
   enable: true
-  banner_img: /img/default.png
+  banner_img: /img/banner.jpg
   banner_img_height: 60
   banner_mask_alpha: 0.3
-  avatar: /img/avatar.png
+  avatar: /img/head.jpg
   name: "MingZai"
   intro: "一个嵌入式方向的大学生，热爱软硬件结合"
   icons:
-    - { class: "iconfont icon-github-fill", link: "https://github.com/mingzaiplanet", tip: "GitHub" }
+    - { class: "iconfont icon-github-fill", link: "https://github.com/MingZaiTown", tip: "GitHub" }
 
 # 暗色模式
 dark_mode:
