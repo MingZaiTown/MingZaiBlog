@@ -11,6 +11,7 @@ menu:
   标签: /tags/ || fas fa-tags
   留言板: /guestbook/ || fas fa-comment
   关于: /about/ || fas fa-user
+  2048: /2048/ || fas fa-gamepad
 
 # ========== Social ==========
 social:
@@ -207,7 +208,7 @@ clickShowText:
 
 # Canvas 网络背景
 canvas_nest:
-  enable: false
+  enable: true
   color: '0,0,255'
   opacity: 0.7
   zIndex: -1
@@ -228,3 +229,5 @@ inject:
   head:
   bottom:
     - <script src="/js/like.js"></script>
+    - <script src="/js/clock.js"></script>
+    - <script src="/js/calendar.js"></script>

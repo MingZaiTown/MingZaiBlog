@@ -1,0 +1,14 @@
+top:
+  - class_name: card-clock
+    id_name: clock-widget
+    order: 1
+    icon: fas fa-clock
+    name: 时钟
+    html: '<div id="clock-time" style="text-align:center;font-size:2rem;font-weight:bold;font-family:monospace;padding:8px 0">00:00:00</div><div id="clock-date" style="text-align:center;color:#858585;font-size:0.9rem"></div>'
+
+  - class_name: card-calendar
+    id_name: calendar-widget
+    order: 2
+    icon: fas fa-calendar-alt
+    name: 日历
+    html: '<div id="calendar-container"></div>'
