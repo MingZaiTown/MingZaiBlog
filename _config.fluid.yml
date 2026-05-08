@@ -1,6 +1,13 @@
 # 导航栏
 navbar:
   blog_title: "MingZai Blog"
+  menu:
+    - { key: "home", link: "/", icon: "iconfont icon-home-fill" }
+    - { key: "archive", link: "/archives/", icon: "iconfont icon-archive-fill" }
+    - { key: "category", link: "/categories/", icon: "iconfont icon-category-fill" }
+    - { key: "tag", link: "/tags/", icon: "iconfont icon-tags-fill" }
+    - { key: "guestbook", link: "/guestbook/", icon: "iconfont icon-comment" }
+    - { key: "about", link: "/about/", icon: "iconfont icon-user-fill" }
 
 # 首页
 index:
@@ -62,6 +69,11 @@ about:
 dark_mode:
   enable: true
   default: auto
+
+# 自定义 JS / CSS
+custom_js:
+  - /js/like.js
+custom_css:
 
 # 页脚
 footer:
