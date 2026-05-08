@@ -70,3 +70,10 @@ footer:
   statistics:
     enable: true
     source: busuanzi
+
+# 评论
+comments:
+  enable: true
+  type: twikoo
+  twikoo:
+    envId: https://project-5luql.vercel.app
