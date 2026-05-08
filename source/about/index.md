@@ -23,4 +23,4 @@ layout: about
 - 🍻Bilibili: [不告诉你](https://www.bilibili.com/)
 ---
 
-*博客使用 Hexo + Fluid 主题，托管于 Cloudflare Pages*
+*博客使用 Hexo + Butterfly 主题，托管于 Cloudflare Pages*

@@ -1,0 +1,230 @@
+# ========== Navigation ==========
+nav:
+  logo: /img/head.jpg
+  display_title: true
+  fixed: true
+
+menu:
+  首页: / || fas fa-home
+  归档: /archives/ || fas fa-archive
+  分类: /categories/ || fas fa-folder-open
+  标签: /tags/ || fas fa-tags
+  留言板: /guestbook/ || fas fa-comment
+  关于: /about/ || fas fa-user
+
+# ========== Social ==========
+social:
+  fab fa-github: https://github.com/MingZaiTown || GitHub || '#24292e'
+
+# ========== Images ==========
+favicon: /img/head.jpg
+
+avatar:
+  img: /img/head.jpg
+  effect: true
+
+disable_top_img: false
+default_top_img: /img/banner.jpg
+index_img: /img/banner.jpg
+archive_img: /img/banner.jpg
+tag_img: /img/banner.jpg
+category_img: /img/banner.jpg
+footer_img: /img/banner.jpg
+
+# ========== Homepage ==========
+index_site_info_top: 300px
+
+subtitle:
+  enable: true
+  effect: true
+  source: false
+  sub:
+    - ⁄(⁄ ⁄•⁄ω⁄•⁄ ⁄)⁄
+    - 一个十分焦虑但是竟然还有心情Vibe coding的大学牲
+    - 嵌入式方向的大学生
+
+index_layout: 4
+
+index_post_content:
+  method: 2
+  length: 300
+
+# ========== Post ==========
+post_meta:
+  page:
+    date_type: created
+    date_format: date
+    categories: true
+    tags: false
+  post:
+    position: left
+    date_type: both
+    date_format: date
+    categories: true
+    tags: true
+
+toc:
+  post: true
+  page: true
+  number: true
+  expand: false
+  style_simple: false
+  scroll_percent: true
+
+post_copyright:
+  enable: true
+  license: CC BY-NC-SA 4.0
+  license_url: https://creativecommons.org/licenses/by-nc-sa/4.0/
+
+related_post:
+  enable: true
+  limit: 6
+  date_type: created
+
+post_pagination: 1
+
+# ========== Footer ==========
+footer:
+  owner:
+    enable: true
+    since: 2025
+  copyright:
+    enable: true
+    version: true
+  custom_text: '<a href="https://hexo.io" target="_blank">Hexo</a> <i class="fas fa-heart" style="color:red"></i> <a href="https://butterfly.js.org/" target="_blank">Butterfly</a>'
+
+# ========== Aside (侧边栏) ==========
+aside:
+  enable: true
+  hide: false
+  button: true
+  mobile: true
+  position: right
+  display:
+    archive: true
+    tag: true
+    category: true
+  card_author:
+    enable: true
+    description: 嵌入式方向的大学生
+    button:
+      enable: true
+      icon: fab fa-github
+      text: Follow Me
+      link: https://github.com/MingZaiTown
+  card_announcement:
+    enable: true
+    content: 欢迎来到我的博客！记录嵌入式学习与项目实践。
+  card_recent_post:
+    enable: true
+    limit: 5
+    sort: date
+  card_categories:
+    enable: true
+    limit: 8
+    expand: none
+  card_tags:
+    enable: true
+    limit: 40
+    color: true
+    orderby: random
+  card_archives:
+    enable: true
+    type: monthly
+    format: MMMM YYYY
+    order: -1
+    limit: 8
+  card_webinfo:
+    enable: true
+    post_count: true
+    last_push_date: true
+
+# ========== Dark Mode ==========
+darkmode:
+  enable: true
+  button: true
+  autoChangeMode: 1
+
+# ========== Comments (Twikoo) ==========
+comments:
+  use: Twikoo
+  text: true
+  lazyload: false
+  count: true
+  card_post_count: true
+
+twikoo:
+  envId: https://mingzaiblog.pages.dev/twikoo
+  region:
+  visitor: false
+
+# ========== Math (MathJax) ==========
+math:
+  use: mathjax
+  per_page: true
+  hide_scrollbar: false
+  mathjax:
+    enableMenu: false
+    tags: none
+
+# ========== Search ==========
+search:
+  use: local_search
+  placeholder: 搜索文章...
+  local_search:
+    preload: true
+    top_n_per_article: 1
+    unescape: true
+
+# ========== Busuanzi ==========
+busuanzi:
+  site_uv: true
+  site_pv: true
+  page_pv: true
+
+# ========== Beauty / Effects ==========
+# 鼠标点击爱心特效
+click_heart:
+  enable: true
+  mobile: true
+
+# 鼠标点击烟花特效
+fireworks:
+  enable: true
+  zIndex: 9999
+  mobile: true
+
+# 鼠标点击文字特效
+clickShowText:
+  enable: false
+  text:
+    - I
+    - LOVE
+    - YOU
+  fontSize: 15px
+  random: false
+  mobile: false
+
+# Canvas 网络背景
+canvas_nest:
+  enable: false
+  color: '0,0,255'
+  opacity: 0.7
+  zIndex: -1
+  count: 99
+  mobile: false
+
+# Canvas 彩带
+canvas_ribbon:
+  enable: false
+  size: 150
+  alpha: 0.6
+  zIndex: -1
+  click_to_change: false
+  mobile: false
+
+# ========== Inject (自定义注入) ==========
+inject:
+  head:
+  bottom:
+    - <script src="/js/like.js"></script>

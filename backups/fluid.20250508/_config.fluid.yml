@@ -1,0 +1,91 @@
+# 导航栏
+navbar:
+  blog_title: "MingZai Blog"
+  menu:
+    - { key: "home", link: "/", icon: "iconfont icon-home-fill" }
+    - { key: "archive", link: "/archives/", icon: "iconfont icon-archive-fill" }
+    - { key: "category", link: "/categories/", icon: "iconfont icon-category-fill" }
+    - { key: "tag", link: "/tags/", icon: "iconfont icon-tags-fill" }
+    - { key: "guestbook", link: "/guestbook/", icon: "iconfont icon-comment" }
+    - { key: "about", link: "/about/", icon: "iconfont icon-user-fill" }
+
+# 首页
+index:
+  banner_img: /img/banner.jpg
+  banner_img_height: 100
+  banner_mask_alpha: 0.3
+  slogan:
+    enable: true
+    text: "⁄(⁄ ⁄•⁄ω⁄•⁄ ⁄)⁄"
+
+# 文章页
+post:
+  banner_img: /img/banner.jpg
+  banner_img_height: 70
+  banner_mask_alpha: 0.3
+  math:
+    enable: true
+    specific: false
+  views:
+    enable: true
+    source: busuanzi
+  comments:
+    enable: true
+    type: twikoo
+
+# 归档页
+archive:
+  banner_img: /img/banner.jpg
+  banner_img_height: 60
+  banner_mask_alpha: 0.3
+
+# 分类页
+category:
+  enable: true
+  banner_img: /img/banner.jpg
+  banner_img_height: 60
+  banner_mask_alpha: 0.3
+
+# 标签页
+tag:
+  enable: true
+  banner_img: /img/banner.jpg
+  banner_img_height: 80
+  banner_mask_alpha: 0.3
+
+# 关于页
+about:
+  enable: true
+  banner_img: /img/banner.jpg
+  banner_img_height: 60
+  banner_mask_alpha: 0.3
+  avatar: /img/head.jpg
+  name: "MingZai"
+  intro: "一个嵌入式方向的大学生，热爱软硬件结合(谢谢你这么夸我)"
+  icons:
+    - { class: "iconfont icon-github-fill", link: "https://github.com/MingZaiTown", tip: "GitHub" }
+
+# 暗色模式
+dark_mode:
+  enable: true
+  default: auto
+
+# 自定义 JS / CSS
+custom_js:
+  - /js/like.js
+custom_css:
+
+# 页脚
+footer:
+  content: '
+    <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a>
+    <i class="iconfont icon-love"></i>
+    <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a>
+  '
+  statistics:
+    enable: true
+    source: busuanzi
+
+# Twikoo 评论后端
+twikoo:
+  envId: https://mingzaiblog.pages.dev/twikoo
