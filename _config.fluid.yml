@@ -22,6 +22,9 @@ post:
   views:
     enable: true
     source: busuanzi
+  comments:
+    enable: true
+    type: twikoo
 
 # 归档页
 archive:
@@ -71,9 +74,6 @@ footer:
     enable: true
     source: busuanzi
 
-# 评论
-comments:
-  enable: true
-  type: twikoo
-  twikoo:
-    envId: https://project-5luql.vercel.app
+# Twikoo 评论后端
+twikoo:
+  envId: https://project-5luql.vercel.app
