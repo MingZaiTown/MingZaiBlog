@@ -3,6 +3,7 @@ title: 关于
 date: 2026-05-08
 layout: about
 ---
+*本博客完全由Opencode（Big Pickle免费模型）构建*
 
 ## 关于我
 
