@@ -76,4 +76,4 @@ footer:
 
 # Twikoo 评论后端
 twikoo:
-  envId: https://project-5luql.vercel.app
+  envId: https://twikoo-proxy.lqx2063089547.workers.dev
