@@ -4,7 +4,7 @@ title: 留言板
 ---
 
 <div id="twikoo" style="margin: 1rem 0;"></div>
-<script src="https://lib.baomitu.com/twikoo/1.7.9/twikoo.all.min.js"></script>
+<script src="https://lib.baomitu.com/twikoo/1.6.8/twikoo.all.min.js"></script>
 <script>
 twikoo.init({
   envId: 'https://mingzaiblog.pages.dev/twikoo',
