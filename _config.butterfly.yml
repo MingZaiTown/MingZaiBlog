@@ -11,7 +11,6 @@ menu:
   标签: /tags/ || fas fa-tags
   留言板: /guestbook/ || fas fa-comment
   关于: /about/ || fas fa-user
-  2048: /2048/ || fas fa-gamepad
 
 # ========== Social ==========
 social:
@@ -231,3 +230,4 @@ inject:
     - <script src="/js/like.js"></script>
     - <script src="/js/clock.js"></script>
     - <script src="/js/calendar.js"></script>
+    - <script src="/js/home-2048.js"></script>
