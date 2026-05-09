@@ -1,0 +1,396 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>2048 - MingZai Blog</title>
+<style>
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+body{font-family:Arial,sans-serif;background:#faf8ef;display:flex;justify-content:center;align-items:center;min-height:100vh;overflow:hidden}
+.wrap{text-align:center;padding:20px;width:100%;max-width:520px}
+h1{font-size:2.5rem;color:#776e65;margin-bottom:8px;font-weight:700;letter-spacing:2px}
+.top{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px}
+.scores{display:flex;gap:8px}
+.scores>div{background:#bbada0;color:#fff;padding:6px 18px;border-radius:6px;font-size:.8rem;min-width:80px}
+.scores>div span{display:block;font-size:1.4rem;font-weight:700}
+.btn{background:#8f7a66;color:#fff;border:none;padding:8px 22px;border-radius:6px;font-size:.95rem;cursor:pointer;transition:background .15s}
+.btn:hover{background:#9f8b77}
+.board-wrap{position:relative;width:100%;aspect-ratio:1;background:#bbada0;border-radius:8px;padding:8px;touch-action:none;-webkit-user-select:none;user-select:none}
+.bg-grid{position:absolute;inset:8px;display:grid;gap:8px;pointer-events:none}
+.bg-cell{background:rgba(238,228,218,.35);border-radius:4px}
+.tile-layer{position:absolute;inset:8px}
+.tile{position:absolute;border-radius:4px;display:flex;align-items:center;justify-content:center;font-weight:700;z-index:2;transition:transform 120ms ease}
+.tile-new{animation:appear 150ms ease}
+.tile-merge{animation:pop 200ms ease;z-index:3}
+@keyframes appear{0%{transform:scale(.3);opacity:0}100%{transform:scale(1);opacity:1}}
+@keyframes pop{0%{transform:scale(1)}40%{transform:scale(1.15)}100%{transform:scale(1)}}
+.hint{text-align:center;margin-top:8px;color:#776e65;font-size:.85rem}
+.overlay{position:absolute;inset:0;background:rgba(238,228,218,.73);z-index:10;display:flex;flex-direction:column;align-items:center;justify-content:center;border-radius:8px}
+.overlay h2{font-size:2.2rem;color:#776e65;margin-bottom:6px}
+.overlay p{color:#776e65;margin-bottom:14px;font-size:1.1rem}
+@media(max-width:440px){h1{font-size:2rem}.scores>div{min-width:65px;padding:4px 12px;font-size:.7rem}.scores>div span{font-size:1.2rem}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <h1>2048</h1>
+  <div class="top">
+    <div class="scores">
+      <div>分数<span id="score">0</span></div>
+      <div>最高<span id="best">0</span></div>
+    </div>
+    <button class="btn" id="newbtn">新游戏</button>
+  </div>
+  <div class="board-wrap" id="board">
+    <div class="bg-grid" id="bgGrid"></div>
+    <div class="tile-layer" id="tileLayer"></div>
+  </div>
+  <div class="hint">方向键 / WASD 移动 · 触屏可滑动</div>
+</div>
+<script>
+(function() {
+  var SIZE = 4, GAP = 8, PAD = 8;
+  var grid = [], tiles = {}, idSeq = 0, score = 0, best = 0, ended = false, won = false;
+  var board, bgGrid, tileLayer, scoreEl, bestEl;
+  var cellSize = 0, animating = false;
+
+  best = parseInt(localStorage.getItem('g2048best') || '0');
+
+  function initDOM() {
+    board = document.getElementById('board');
+    bgGrid = document.getElementById('bgGrid');
+    tileLayer = document.getElementById('tileLayer');
+    scoreEl = document.getElementById('score');
+    bestEl = document.getElementById('best');
+    bestEl.textContent = best;
+    document.getElementById('newbtn').onclick = reset;
+    buildGrid();
+    reset();
+    window.addEventListener('resize', debounce(function(){ buildGrid(); rerenderAll(); }, 300));
+  }
+
+  function debounce(fn, ms) { var t; return function() { clearTimeout(t); t = setTimeout(fn, ms); }; }
+
+  function buildGrid() {
+    var w = board.clientWidth || board.offsetWidth || 400;
+    cellSize = (w - PAD * 2 - GAP * (SIZE - 1)) / SIZE;
+    bgGrid.style.gridTemplateColumns = 'repeat(' + SIZE + ', ' + cellSize + 'px)';
+    bgGrid.style.gridTemplateRows = 'repeat(' + SIZE + ', ' + cellSize + 'px)';
+    bgGrid.innerHTML = '';
+    for (var i = 0; i < SIZE * SIZE; i++) {
+      var c = document.createElement('div');
+      c.className = 'bg-cell';
+      bgGrid.appendChild(c);
+    }
+  }
+
+  function posCSS(r, c) {
+    var x = c * (cellSize + GAP);
+    var y = r * (cellSize + GAP);
+    return 'translate(' + x + 'px,' + y + 'px)';
+  }
+
+  function tileStyle(v) {
+    var bg = {2:'#eee4da',4:'#ede0c8',8:'#f2b179',16:'#f59563',32:'#f67c5f',64:'#f65e3b',
+              128:'#edcf72',256:'#edcc61',512:'#edc850',1024:'#edc53f',2048:'#edc22e'};
+    var fg = {2:'#776e65',4:'#776e65'};
+    var b = bg[v] || '#3c3a32', f = fg[v] || '#f9f6f2';
+    var fs = v < 100 ? '2rem' : v < 1000 ? '1.6rem' : v < 10000 ? '1.2rem' : '.95rem';
+    return 'background:' + b + ';color:' + f + ';font-size:' + fs +
+      ';width:' + cellSize + 'px;height:' + cellSize + 'px';
+  }
+
+  function makeTile(v, r, c, cls) {
+    var el = document.createElement('div');
+    el.className = 'tile' + (cls ? ' ' + cls : '');
+    el.textContent = v;
+    el.style.cssText = tileStyle(v) + ';transform:' + posCSS(r, c);
+    tileLayer.appendChild(el);
+    return el;
+  }
+
+  function renderAll() {
+    tileLayer.innerHTML = '';
+    tiles = {};
+    for (var r = 0; r < SIZE; r++)
+      for (var c = 0; c < SIZE; c++) {
+        var id = grid[r][c];
+        if (id) {
+          var val = tiles[id] ? tiles[id].val : (function() { for (var k in tiles) return; return 2; })();
+          // Actually, store tile value in grid as positive value, not ID
+        }
+      }
+    // We store values in grid directly, not IDs
+    renderGrid();
+  }
+
+  // Redesign: store values directly in grid, use visual tiles for animation
+  var visualTiles = {};  // id -> {el, val, r, c}
+  var nextId = 1;
+
+  function rerenderAll() {
+    // Re-render all visual tiles at their current positions
+    tileLayer.innerHTML = '';
+    visualTiles = {};
+    for (var r = 0; r < SIZE; r++)
+      for (var c = 0; c < SIZE; c++) {
+        var v = grid[r][c];
+        if (v) {
+          var id = nextId++;
+          var el = makeTile(v, r, c);
+          visualTiles[id] = {el: el, val: v, r: r, c: c};
+          grid[r][c] = id; // store id instead of value
+        }
+      }
+  }
+
+  // OK let's rethink. grid stores either 0 or tile-id.
+  // visualTiles maps id -> {el, val, r, c}
+
+  function initGrid() {
+    for (var r = 0; r < SIZE; r++) for (var c = 0; c < SIZE; c++) grid[r][c] = 0;
+    visualTiles = {};
+    tileLayer.innerHTML = '';
+    nextId = 1;
+  }
+
+  function spawn() {
+    var empty = [];
+    for (var r = 0; r < SIZE; r++) for (var c = 0; c < SIZE; c++) if (!grid[r][c]) empty.push({r:r,c:c});
+    if (!empty.length) return;
+    var p = empty[Math.floor(Math.random() * empty.length)];
+    var v = Math.random() < .9 ? 2 : 4;
+    var id = nextId++;
+    var el = makeTile(v, p.r, p.c, 'tile-new');
+    visualTiles[id] = {el: el, val: v, r: p.r, c: p.c};
+    grid[p.r][p.c] = id;
+  }
+
+  function reset() {
+    ended = false; won = false; score = 0;
+    scoreEl.textContent = '0';
+    initGrid();
+    spawn(); spawn();
+    removeOverlay();
+  }
+
+  function moveTile(id, r, c) {
+    var t = visualTiles[id];
+    if (!t) return;
+    grid[t.r][t.c] = 0;
+    t.r = r; t.c = c;
+    t.el.style.transform = posCSS(r, c);
+    grid[r][c] = id;
+  }
+
+  function removeTile(id) {
+    var t = visualTiles[id];
+    if (t) { t.el.remove(); delete visualTiles[id]; }
+  }
+
+  function getOverlay() { return board.querySelector('.overlay'); }
+  function removeOverlay() { var o = getOverlay(); if (o) o.remove(); }
+
+  function showEnd(title) {
+    removeOverlay();
+    var d = document.createElement('div');
+    d.className = 'overlay';
+    d.innerHTML = '<h2>' + title + '</h2><p>得分: ' + score + '</p><button class="btn" onclick="document.querySelector(\'#newbtn\').click()">再来一局</button>';
+    board.appendChild(d);
+  }
+
+  function performMove(d) {
+    if (ended || animating) return;
+
+    // d: 0=left, 1=down, 2=right, 3=up
+    // Collect tiles in processing order
+    var list = [];
+    var seen = {};
+    for (var ri = 0; ri < SIZE; ri++) {
+      for (var ci = 0; ci < SIZE; ci++) {
+        var r, c;
+        if (d === 0) { r = ri; c = ci; }
+        else if (d === 2) { r = ri; c = SIZE - 1 - ci; }
+        else if (d === 1) { r = SIZE - 1 - ri; c = ci; }
+        else if (d === 3) { r = ri; c = ci; }
+        var id = grid[r][c];
+        if (id && !seen[id]) { seen[id] = true; list.push({id:id, r:r, c:c, val:visualTiles[id].val}); }
+      }
+    }
+
+    // Process lines based on direction
+    var movements = [], merges = [], addedScore = 0;
+
+    for (var li = 0; li < SIZE; li++) {
+      var line = [];
+      if (d === 0 || d === 2) {
+        for (var ci = 0; ci < SIZE; ci++) {
+          var c = (d === 0) ? ci : SIZE - 1 - ci;
+          var id = grid[li][c];
+          if (id) line.push({id:id, val:visualTiles[id].val, r:li, c:c});
+        }
+      } else {
+        for (var ri = 0; ri < SIZE; ri++) {
+          var r = (d === 1) ? SIZE - 1 - ri : ri;
+          var id = grid[r][li];
+          if (id) line.push({id:id, val:visualTiles[id].val, r:r, c:li});
+        }
+      }
+
+      var slid = slide(line);
+      if (d === 0 || d === 2) {
+        for (var si = 0; si < slid.result.length; si++) {
+          var it = slid.result[si];
+          movements.push({id:it.id, toR:li, toC:si, fromR:it.origR, fromC:it.origC});
+        }
+        for (var mi = 0; mi < slid.merges.length; mi++) {
+          var mg = slid.merges[mi];
+          merges.push({fromId:mg.fromId, fromId2:mg.fromId2, toR:li, toC:mg.pos, val:mg.val});
+          addedScore += mg.val;
+        }
+      } else {
+        for (var si = 0; si < slid.result.length; si++) {
+          var it = slid.result[si];
+          movements.push({id:it.id, toR:si, toC:li, fromR:it.origR, fromC:it.origC});
+        }
+        for (var mi = 0; mi < slid.merges.length; mi++) {
+          var mg = slid.merges[mi];
+          merges.push({fromId:mg.fromId, fromId2:mg.fromId2, toR:mg.pos, toC:li, val:mg.val});
+          addedScore += mg.val;
+        }
+      }
+    }
+
+    var hasMoved = movements.some(function(m) { return m.fromR !== m.toR || m.fromC !== m.toC; }) || merges.length > 0;
+    if (!hasMoved) return;
+
+    animating = true;
+
+    // Step 1: update grid - clear all, will fill during animation
+    for (var r = 0; r < SIZE; r++) for (var c = 0; c < SIZE; c++) grid[r][c] = 0;
+
+    // Step 2: move tiles to new positions (CSS transitions play)
+    for (var i = 0; i < movements.length; i++) {
+      var m = movements[i];
+      moveTile(m.id, m.toR, m.toC);
+    }
+
+    // Step 3: after animation, handle merges + spawn new tile
+    setTimeout(function() {
+      // Remove merged source tiles
+      for (var i = 0; i < merges.length; i++) {
+        var mg = merges[i];
+        removeTile(mg.fromId);
+        removeTile(mg.fromId2);
+      }
+
+      // Create merged result tiles
+      for (var i = 0; i < merges.length; i++) {
+        var mg = merges[i];
+        var id = nextId++;
+        var el = makeTile(mg.val, mg.toR, mg.toC, 'tile-merge');
+        visualTiles[id] = {el:el, val:mg.val, r:mg.toR, c:mg.toC};
+        grid[mg.toR][mg.toC] = id;
+
+        if (mg.val >= 2048 && !won && !ended) {
+          won = true;
+          showEnd('🎉 你赢了！');
+          ended = true;
+        }
+      }
+
+      // Update score
+      score += addedScore;
+      scoreEl.textContent = score;
+      if (score > best) {
+        best = score;
+        localStorage.setItem('g2048best', best.toString());
+        bestEl.textContent = best;
+      }
+
+      // Spawn new random tile
+      spawn();
+
+      animating = false;
+
+      // Check game over
+      if (!ended && isGameOver()) {
+        ended = true;
+        showEnd('游戏结束');
+      }
+    }, 130);
+  }
+
+  function slide(line) {
+    // line: [{id, val, r, c}] sorted in movement direction
+    var result = [];
+    var merges = [];
+    var mergedIdx = {};
+
+    for (var i = 0; i < line.length; i++) {
+      var item = line[i];
+      if (result.length > 0 && result[result.length - 1].val === item.val && !mergedIdx[result.length - 1]) {
+        var prev = result.pop();
+        var mv = prev.val * 2;
+        var pos = result.length; // position where merged tile ends up
+        merges.push({fromId:prev.id, fromId2:item.id, pos:pos, val:mv, origR1:prev.origR||prev.r, origC1:prev.origC||prev.c, origR2:item.r, origC2:item.c});
+        result.push({id:prev.id, val:mv, origR:prev.origR||prev.r, origC:prev.origC||prev.c});
+        mergedIdx[result.length - 1] = true;
+      } else {
+        result.push({id:item.id, val:item.val, origR:item.r, origC:item.c});
+      }
+    }
+
+    // Fix up merge positions
+    for (var mi = 0; mi < merges.length; mi++) {
+      merges[mi].pos = merges[mi].pos;
+    }
+
+    return {result: result, merges: merges};
+  }
+
+  function isGameOver() {
+    for (var r = 0; r < SIZE; r++)
+      for (var c = 0; c < SIZE; c++) {
+        if (!grid[r][c]) return false;
+        var v = visualTiles[grid[r][c]] ? visualTiles[grid[r][c]].val : 0;
+        if (c + 1 < SIZE) { var v2 = visualTiles[grid[r][c+1]] ? visualTiles[grid[r][c+1]].val : 0; if (v === v2) return false; }
+        if (r + 1 < SIZE) { var v3 = visualTiles[grid[r+1][c]] ? visualTiles[grid[r+1][c]].val : 0; if (v === v3) return false; }
+      }
+    return true;
+  }
+
+  // --- Controls ---
+  var keyMap = {37:0, 38:3, 39:2, 40:1, 65:0, 87:3, 68:2, 83:1};
+  document.addEventListener('keydown', function(e) {
+    var d = keyMap[e.keyCode];
+    if (d !== undefined && !e.ctrlKey && !e.metaKey && !e.altKey) {
+      e.preventDefault();
+      performMove(d);
+    }
+  });
+
+  var tx, ty;
+  document.addEventListener('touchstart', function(e) {
+    if (!e.target.closest('#board')) return;
+    tx = e.changedTouches[0].clientX;
+    ty = e.changedTouches[0].clientY;
+  }, {passive:true});
+  document.addEventListener('touchend', function(e) {
+    if (tx === undefined) return;
+    var dx = e.changedTouches[0].clientX - tx;
+    var dy = e.changedTouches[0].clientY - ty;
+    var adx = Math.abs(dx), ady = Math.abs(dy);
+    if (Math.max(adx, ady) < 25) return;
+    var d;
+    if (adx > ady) d = dx > 0 ? 2 : 0;
+    else d = dy > 0 ? 1 : 3; // down=1, up=3
+    performMove(d);
+    tx = ty = undefined;
+  }, {passive:true});
+
+  initDOM();
+})();
+</script>
+</body>
+</html>
