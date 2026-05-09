@@ -46,11 +46,12 @@
   }
 
   function init() {
-    var board = document.getElementById('board');
-    if (!board) return;
+    var recentPosts = document.querySelector('#recent-posts');
+    if (!recentPosts) return;
 
     var section = document.createElement('div');
     section.id = 'home-2048';
+    section.style.cssText = 'max-width:500px;margin:2rem auto;padding:0 15px';
 
     section.innerHTML =
       '<div class="g-header">' +
@@ -67,9 +68,7 @@
       '</div>' +
       '<div class="g-hint">方向键 / WASD 移动</div>';
 
-    var likeBtn = board.querySelector('.like-btn');
-    if (likeBtn) board.insertBefore(section, likeBtn);
-    else board.appendChild(section);
+    recentPosts.parentNode.insertBefore(section, recentPosts.nextSibling);
 
     container = document.getElementById('g-board');
     gridEl = container;
